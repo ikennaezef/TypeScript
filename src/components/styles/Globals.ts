@@ -17,15 +17,6 @@ export const GlobalStyles = createGlobalStyle<MyProps>`
 		overflow-x: hidden;
 	}
 
-
-	@media screen and (max-width: ${({ theme }) => theme.mobile}) {
-
-		html {
-			font-size: 80%;
-		}
-
-	}
-
 	@media screen and (min-width:1500px) {
 		html {
 			font-size: 120%;

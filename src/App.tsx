@@ -7,6 +7,8 @@ import theme from './theme';
 import { Container } from './components/styles/Container';
 import Header from './components/Header';
 import InputForm from './components/InputForm';
+import Todos from './components/Todos';
+
 
 
 const App: FC = () => {
@@ -19,6 +21,7 @@ const App: FC = () => {
         <Header />
         <Container>
           <InputForm />
+          <Todos />
         </Container>
       </>
     </ThemeProvider>

@@ -4,6 +4,7 @@ import { ToDoObj } from './index.d'
 interface AppContextInterface {
   todos: ToDoObj[];
   addTodo: (todo: ToDoObj) => void;
+  toggleTodo: (todo: ToDoObj) => void;
 }
 
 interface Prop {
@@ -11,29 +12,30 @@ interface Prop {
 }
 
 export const useApp = () => {
-  return useContext(AppContext);
+  return useContext(AppContext) as AppContextInterface;
 }
 
 const AppContext = createContext<AppContextInterface | null>(null);
 
-export const ContextProvider: React.FC<Prop> = ({ children }) => {
+export const ContextProvider: FC<Prop> = ({ children }) => {
 
-  const [todos, setTodos] = useState<ToDoObj[]>([]);
+  const [todos, setTodos] = useState<ToDoObj[]>([{ id: 4354, title: 'Sample tilte fro context', description: 'Sample desc from conyext', done: true }]);
 
   const addTodo = (todo: ToDoObj) => {
-    const newTodo: ToDoObj = {
-      id: Math.round(Math.random() * 1000),
-      title: todo.title,
-      description: todo.description,
-      done: todo.done
-    }
+    setTodos([...todos, todo]);
+  }
 
-    setTodos([...todos, newTodo]);
+  const toggleTodo = (todo: ToDoObj) => {
+    todos.forEach(t => {
+      if (t === todo) {
+        t.done = !t.done;
+      }
+    })
   }
 
 
   return (
-    <AppContext.Provider value={{ todos, addTodo }}>
+    <AppContext.Provider value={{ todos, addTodo, toggleTodo }}>
       {children}
     </AppContext.Provider>
   )
