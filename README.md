@@ -1,0 +1,3 @@
+# TS First
+
+Finally learning TypeScript. Let me see what the fuss is all about...
