@@ -4,6 +4,9 @@ import { ThemeProvider } from 'styled-components';
 import { GlobalStyles } from './components/styles/Globals';
 import theme from './theme';
 
+import { Container } from './components/styles/Container';
+import Header from './components/Header';
+import InputForm from './components/InputForm';
 
 
 const App: FC = () => {
@@ -13,7 +16,10 @@ const App: FC = () => {
     <ThemeProvider theme={theme} >
       <GlobalStyles />
       <>
-        <h1>Hello People. What's good nigga</h1>
+        <Header />
+        <Container>
+          <InputForm />
+        </Container>
       </>
     </ThemeProvider>
   );
