@@ -20,6 +20,10 @@ const Todos: FC = () => {
 
   const { todos } = useApp();
 
+  if (todos.length < 1) {
+    return <div>Nothing left to do. You can relax..... for now</div>
+  }
+
   return (
     <TodosContainer>
       {todos.map(todo => <Todo key={todo.id} todo={todo} />)}

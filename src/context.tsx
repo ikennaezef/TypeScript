@@ -4,7 +4,8 @@ import { ToDoObj } from './index.d'
 interface AppContextInterface {
   todos: ToDoObj[];
   addTodo: (todo: ToDoObj) => void;
-  toggleTodo: (todo: ToDoObj) => void;
+  toggleTodo: (id: number) => void;
+  deleteTodo: (id: number) => void;
 }
 
 interface Prop {
@@ -19,23 +20,27 @@ const AppContext = createContext<AppContextInterface | null>(null);
 
 export const ContextProvider: FC<Prop> = ({ children }) => {
 
-  const [todos, setTodos] = useState<ToDoObj[]>([{ id: 4354, title: 'Sample tilte fro context', description: 'Sample desc from conyext', done: true }]);
+  const [todos, setTodos] = useState<ToDoObj[]>([]);
 
   const addTodo = (todo: ToDoObj) => {
     setTodos([...todos, todo]);
   }
 
-  const toggleTodo = (todo: ToDoObj) => {
-    todos.forEach(t => {
-      if (t === todo) {
-        t.done = !t.done;
-      }
-    })
+  const toggleTodo = (id: number) => {
+    setTodos(
+      todos.map(task => task.id === id ? { ...task, done: !task.done } : task)
+    )
+  }
+
+  const deleteTodo = (id: number) => {
+    setTodos(
+      todos.filter(task => task.id !== id)
+    )
   }
 
 
   return (
-    <AppContext.Provider value={{ todos, addTodo, toggleTodo }}>
+    <AppContext.Provider value={{ todos, addTodo, toggleTodo, deleteTodo }}>
       {children}
     </AppContext.Provider>
   )

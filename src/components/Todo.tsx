@@ -1,7 +1,8 @@
-import { FC } from 'react'
+import React, { FC, useRef } from 'react'
 import styled from 'styled-components'
-
 import { ToDoObj } from '../index.d';
+import { useApp } from '../context';
+import trash from '../img/trash.svg';
 
 
 const StyledTodo = styled.div`
@@ -16,11 +17,27 @@ const StyledTodo = styled.div`
 
   div {    
     padding: 1rem;
+    height: 100%;
 
     &.done {
       border-left: 4px solid ${({ theme }) => theme.colors.alt};
       text-decoration: line-through;
       color: #aaa;
+    }
+  }
+
+  button {
+    padding: 0.2rem 0.4rem;
+    cursor: pointer;
+    border: 1px solid ${({ theme }) => theme.colors.error};
+    border-radius: 0.3rem;
+
+    &:hover {
+      background-color: rgba(200, 100, 100, 0.5);
+    }
+
+    img {
+      width: 20px;
     }
   }
 `;
@@ -33,7 +50,7 @@ const Title = styled.h1`
 const Description = styled.p`
   color: #aaa;
   font-size: 1rem;
-
+  margin-bottom: 1rem;
 `;
 
 interface Prop {
@@ -41,11 +58,22 @@ interface Prop {
 }
 
 const Todo: FC<Prop> = ({ todo }) => {
+
+  const { toggleTodo, deleteTodo } = useApp();
+
+  const btnRef = useRef<HTMLButtonElement>(null);
+
+  const buttonClickHandler = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    deleteTodo(todo.id);
+  }
+
   return (
     <StyledTodo>
-      <div className={todo.done ? 'done' : ''}>
+      <div className={todo.done ? 'done' : 'todo'} onClick={() => toggleTodo(todo.id)}>
         <Title>{todo.title}</Title>
         <Description>{todo.description}</Description>
+        <button ref={btnRef} onClick={buttonClickHandler}><img src={trash} alt='delete' /></button>
       </div>
 
     </StyledTodo>

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useRef } from 'react'
 import { useApp } from '../context';
 
 import styled from 'styled-components'
@@ -59,6 +59,9 @@ const InputForm: FC = () => {
   const [desc, setDesc] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+  const textRef = useRef<HTMLTextAreaElement>(null);
+
   const { addTodo } = useApp();
 
   const addTask = () => {
@@ -67,6 +70,10 @@ const InputForm: FC = () => {
       setTimeout(() => setError(false), 1000);
     } else {
       addTodo({ id: Math.round(Math.random() * 1000), title: task, description: desc, done: false });
+      if (inputRef.current !== null && textRef.current !== null) {
+        inputRef.current.value = '';
+        textRef.current.value = '';
+      }
     }
   }
 
@@ -74,8 +81,8 @@ const InputForm: FC = () => {
     <StyledForm>
       <p>You can add your task here</p>
       <div>
-        <input type='text' placeholder='Add task' onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTask(e.target.value)} />
-        <textarea placeholder='Enter description' onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDesc(e.target.value)} />
+        <input type='text' ref={inputRef} placeholder='Add task' onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTask(e.target.value)} />
+        <textarea ref={textRef} placeholder='Enter description' onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDesc(e.target.value)} />
         <button onClick={addTask}>Add</button>
       </div>
       {error && <span>No task to add!</span>}
